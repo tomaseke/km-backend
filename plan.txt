@@ -1,0 +1,11 @@
+create user should save {name, email, id}
+update user should update {name, profilePic}
+delete user should delete user and all his keys
+get user should return {name, email, profilePic}
+
+// keys
+
+create key should save {userId, keyId, name, date}
+update key should update {name}
+delete key should delete key
+get keys should return all keys of the user
