@@ -11,8 +11,13 @@ const models = {
 
 
 router.get('/:userId', async (req, res) => {
-    const user = await User.findOne({id: req.params.userId});
-    res.status(200).json({name: user.name, email: user.email, profilePic: user.profilePic });
+    try {
+        const user = await User.findOne({id: req.params.userId});
+        res.status(200).json({name: user.name, email: user.email, profilePic: user.profilePic });
+    }
+    catch(err) {
+        res.json(err.message);
+    }
 })
 
 router.post('/', async (req, res) => {

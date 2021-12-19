@@ -9,18 +9,24 @@ const models = {
     "license-keys": LicenseKey
 }
 
-router.patch('/license-keys', async (req, res) => {
-    const resp = await LicenseKey.find({keyId: req.body.keyId}).updateOne({date: req.body.date})
-    res.json(resp);
-})
+// router.patch('/license-keys', async (req, res) => {
+//     const resp = await LicenseKey.find({keyId: req.body.keyId}).updateOne({date: req.body.date})
+//     res.json(resp);
+// })
 
 
 router.get('/:collection/:fbUserId', async (req, res) => {
         // get user by firebase ID
-        const user = await User.findOne({id: req.params.fbUserId});
-        // find all keys where userId is matching
-        const resp = await models[req.params.collection].find({userId: user._id.toString()});
-        res.status(200).json(resp);
+        try {
+            const user = await User.findOne({id: req.params.fbUserId});
+            // find all keys where userId is matching
+            const resp = await models[req.params.collection].find({userId: user._id.toString()});
+            res.status(200).json(resp);
+        }
+        catch (error) {
+            res.json(error)
+        }
+
 })
 
 router.post('/:collection', async (req, res) => {
@@ -31,7 +37,7 @@ router.post('/:collection', async (req, res) => {
 })
 
 router.patch('/:collection', async (req, res) => {
-    const resp = await models[req.params.collection].find({keyId: req.body.keyId}).updateOne({name: req.body.name})
+    const resp = await models[req.params.collection].find({keyId: req.body.keyId}).updateOne({name: req.body.name, date: req.body.date})
     res.json(resp);
 })
 
