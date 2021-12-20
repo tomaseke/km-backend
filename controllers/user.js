@@ -20,7 +20,7 @@ export async function getUser (req, res){
 export async function createUser (req, res) {
     try {
         const user = await User.create(req.body);
-        res.json(user)
+        res.status(201).json(user)
     }
     catch(err) {
         res.json(err.message);
@@ -28,19 +28,29 @@ export async function createUser (req, res) {
 }
 
 export async function updateUser(req, res)  {
-    const user = await User.findOne({id: req.body.userId});
-    user.profilePic = req.body.profilePic;
-    user.name = req.body.name;
-    await user.save();
-    res.json(user);
+    try{
+        const user = await User.findOne({id: req.body.userId});
+        user.profilePic = req.body.profilePic;
+        user.name = req.body.name;
+        await user.save();
+        res.status(204).json(user);
+    }
+    catch (err){
+        res.json(err);
+    }
 }
 
 export async function deleteUser(req, res){
-    // delete all users keys and then delete user itself
-    const user = await User.findOne({id: req.params.userId});
-    await models["license-keys"].find({userId: user._id}).deleteMany();
-    await models["solver-keys"].find({userId: user._id}).deleteMany();
-    await models["management-keys"].find({userId: user._id}).deleteMany();
-    user.deleteOne();
-    res.json({deleted: true});
+    try {
+        // delete all users keys and then delete user itself
+        const user = await User.findOne({id: req.params.userId});
+        await models["license-keys"].find({userId: user._id}).deleteMany();
+        await models["solver-keys"].find({userId: user._id}).deleteMany();
+        await models["management-keys"].find({userId: user._id}).deleteMany();
+        user.deleteOne();
+        res.status(204).json({deleted: true});
+    }
+    catch (err){
+        res.json(err);
+    }
 }

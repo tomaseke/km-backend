@@ -20,18 +20,33 @@ export async function getKeys(req, res, next){
 }
 
 export async function addKey(req, res, next) {
-    const user = await User.findOne({id: req.body.userId});
-    const mongooseId = user._id.toString();
-    const resp = await models[req.params.collection].create({name: req.body.name, date: req.body.date, keyId: req.body.keyId, userId: mongooseId});
-    res.json(resp);
+    try {
+        const user = await User.findOne({id: req.body.userId});
+        const mongooseId = user._id.toString();
+        const resp = await models[req.params.collection].create({name: req.body.name, date: req.body.date, keyId: req.body.keyId, userId: mongooseId});
+        res.status(201).json(resp);
+    }
+    catch (err){
+        res.json(err);
+    }
 }
 
 export async function updateKey(req, res, next) {
-    const resp = await models[req.params.collection].find({keyId: req.body.keyId}).updateOne({name: req.body.name, date: req.body.date})
-    res.json(resp);
+    try {
+        const resp = await models[req.params.collection].find({keyId: req.body.keyId}).updateOne({name: req.body.name, date: req.body.date})
+        res.status(204).json(resp);
+    }
+    catch (err){
+        res.json(err);
+    }
 }
 
 export async function deleteKey (req, res){
-    const resp = await models[req.params.collection].find({keyId: req.params.keyId}).deleteOne();
-    res.json(resp);
+    try {
+        const resp = await models[req.params.collection].find({keyId: req.params.keyId}).deleteOne();
+        res.status(204).json(resp);
+    }
+    catch (err){
+        res.json(err);
+    }
 }
