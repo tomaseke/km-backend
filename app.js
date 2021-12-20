@@ -2,6 +2,9 @@ import express from 'express';
 import bodyParser from "body-parser";
 import keyRoutes from "./routes/keys.js";
 import userRoutes from "./routes/user.js"
+import mongoose from "mongoose";
+import env from 'dotenv';
+env.config();
 const app = express();
 
 app.use((req, res, next) => {
@@ -14,7 +17,9 @@ app.use(bodyParser.json());
 app.use('/keys', keyRoutes);
 app.use('/user',userRoutes);
 
-
-app.listen(3000, () => {
-    console.log('listening')
+mongoose.connect(process.env.MONGO_URI).then(() => {
+    app.listen(3000, () => {
+        console.log('listening')
+    })
 })
+
