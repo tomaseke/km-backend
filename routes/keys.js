@@ -10,6 +10,7 @@ router.get('/:collection/:fbUserId', getKeys)
 router.post('/:collection',
     body('name').isLength({min: 1, max:20}).withMessage('name must be more than 5 chars and less than 20'),
     body('keyId').isLength({min: 60, max:60}).withMessage('keyId must be 60 chars'),
+    validateReq,
     addKey)
 
 router.patch('/:collection',

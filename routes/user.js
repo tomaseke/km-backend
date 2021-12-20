@@ -1,5 +1,5 @@
 import express from "express";
-import {createUser, getUser, updateUser} from "../controllers/user.js";
+import {createUser, deleteUser, getUser, updateUser} from "../controllers/user.js";
 import {body} from "express-validator";
 import {validateReq} from "../validateReq.js";
 const router = express.Router();
@@ -17,7 +17,7 @@ router.post('/',
 
 router.patch('/', updateUser)
 
-router.delete('/:userId', )
+router.delete('/:userId', deleteUser)
 
 
 

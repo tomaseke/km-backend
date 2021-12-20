@@ -1,6 +1,5 @@
 import User from "../models/user.js";
 import {LicenseKey, ManagementKey, SolverKey} from "../models/keys.js";
-import {validationResult} from "express-validator";
 
 const models = {
     "solver-keys": SolverKey,
